@@ -109,6 +109,23 @@ class Stack:
     def size(self):
         return len(self.items)
 
+#The function below implements the "Divide by 2" algorithm. It takes an argument that is a decimal number and repeatedly
+#divides it by 2.
+
+def divideBy2(decNumber):
+    remstack = Stack()
+
+    while decNumber > 0:
+        rem = decNumber % 2
+        remstack.push(rem)
+        decNumber = decNumber // 2
+
+    binString = " "
+    while not remstack.isEmpty():
+        binString = binString + str(remstack.pop())
+
+    return binString
+
 if __name__ == "__main__":
 
     s = Stack()
@@ -131,3 +148,5 @@ if __name__ == "__main__":
     #a stack of size "n" --> the benchmarking of both implementations will have different timings
 
     #Testing Git repo.....
+    number = divideBy2(223)
+    print(number)
