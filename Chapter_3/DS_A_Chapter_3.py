@@ -159,6 +159,42 @@ def baseConverter(decNumber, base):
 #operator that is compared against it will have higher precedence and will be placed on top of it.
 #Ex: + --> 1, * --> 2, / --> 3 as an example
 
+def infixToPostfix(infixexpr):
+    prec = {} #Dictionary for holding precedence of operators
+    prec["*"] = 3 #Setting the precedence of operators using a dictionary where the operators are the keys
+    prec["/"] = 3
+    prec["+"] = 2
+    prec["-"] = 2
+    prec["("] = 1
+
+    opStack = Stack() #Create a stack for storing the operators
+    postfixList = [] #Create a list for storing the output
+
+    tokenList = infixexpr.split() #I'm guessing this splits the expression using a delimeter...
+
+    for token in tokenList:
+        if token in string.ascii_uppercase: #If the token is a string add it to the output list
+            postfixList.append(token)
+        elif token == '(': #If the token is a left parenthesis, push it to the stack for storing tokens
+            opStack.push(token)
+        elif token == ')': #If the token is a right parenthesis, pop the operator stack until left parenthesis reached
+            topToken = opStack.pop()
+            while topToken != '(':
+                postfixList.append(topToken)
+                topToken = opStack.pop()
+        else: #I believe this section of the code is for checking the opstack for operators and removing and replacing
+              #those with higher or equal precedence and appending them to the output list
+            while (not opStack.isEmpty()) and \
+                    (prec[opStack.peek()] >= prec[token]):
+                postfixList.append(opStack.pop())
+                opStack.push(token)
+    #We then check the opstack and add any remaining operators in the stack to the output list
+    while not opStack.isEmpty():
+        postfixList.append(opStack.pop())
+
+    return " ".join(postfixList)
+
+
 if __name__ == "__main__":
 
     s = Stack()
@@ -186,3 +222,7 @@ if __name__ == "__main__":
 
     number2 = baseConverter(1023, 16)
     print(number2)
+
+    list1 = infixToPostfix("(A + B) * (C + D)")
+    list2 = infixToPostfix("(A + B) * C")
+    list3 = infixToPostfix("A + B + C")
