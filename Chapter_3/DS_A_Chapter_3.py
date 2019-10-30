@@ -192,7 +192,7 @@ def infixToPostfix(infixexpr):
     while not opStack.isEmpty():
         postfixList.append(opStack.pop())
 
-    return " ".join(postfixList)
+    return " ".join(postfixList) #Joins elements of string with a space between them (member of "string" class)
 
 
 if __name__ == "__main__":
