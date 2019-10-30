@@ -1,4 +1,4 @@
-
+import string
 
 class Stack:    #Assumes that the end of the list will hold the top element of the stack. As the stack grows (as push
                 #operations occur), new items will be added to the end of the list. Pop() operations will manipulate
@@ -118,13 +118,46 @@ def divideBy2(decNumber):
     while decNumber > 0:
         rem = decNumber % 2
         remstack.push(rem)
-        decNumber = decNumber // 2
+        decNumber = decNumber // 2 # <-- Integer Division
 
     binString = " "
     while not remstack.isEmpty():
         binString = binString + str(remstack.pop())
 
     return binString
+
+#We can modify the "Divide by 2" function to divide by any base using a more general "Divide by Base" function, as
+#shown below. The function takes a decimal number and any base between 2 and 16 as parameters. The remainders are
+#still pushed unto the stack until the remainder reaches zero with the same left-to-right construction technique with
+#a slight change in that, as we get to 10, we can't simply use the remainder as they are themselves represented as
+#two digit numbers --> we instead have to create a set of digits that can be used to represent those remainder
+#beyond 9 --> SOLUTION: extend the digit set to include some alphabet characters --> Example: hexadecimal uses the
+#ten decimal digits along with the first six alphabet characters for the 16 digits. To implement this, a digit string
+#is created that stores the digits in their corresponding positions. 0 is at position 0, 1 is at position 1, A is at
+#position 10, B is at position 11 and so on. When a remainder is removed from the stack, it can be used to index into
+#the digit string and the correct resulting digit can be appended to the answer
+
+def baseConverter(decNumber, base):
+    digits = "0123456789ABCDEF"
+
+    remstack = Stack()
+
+    while decNumber > 0:
+        rem = decNumber % base
+        remstack.push(rem)
+        decNumber = decNumber // base
+
+    newString = " "
+    while not remstack.isEmpty():
+        newString = newString + digits[remstack.pop()]
+
+    return newString
+
+#This code uses a dictionary called "prec" to hold the precedence of operators for the code that converts an infix
+#operation to a postfix operation. The dictionary maps each operator to an integer that can be compared against the
+#precedence levels of other operators. The left parenthesis will receive the lowest value possible so that any
+#operator that is compared against it will have higher precedence and will be placed on top of it.
+#Ex: + --> 1, * --> 2, / --> 3 as an example
 
 if __name__ == "__main__":
 
@@ -150,3 +183,6 @@ if __name__ == "__main__":
     #Testing Git repo.....
     number = divideBy2(223)
     print(number)
+
+    number2 = baseConverter(1023, 16)
+    print(number2)
