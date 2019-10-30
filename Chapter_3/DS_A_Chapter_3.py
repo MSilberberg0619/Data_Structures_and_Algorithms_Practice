@@ -168,7 +168,7 @@ def infixToPostfix(infixexpr):
     prec["("] = 1
 
     opStack = Stack() #Create a stack for storing the operators
-    postfixList = [] #Create a list for storing the output
+    postfixList = [] #Create a list for storing the output. This is what will be output
 
     tokenList = infixexpr.split() #I'm guessing this splits the expression using a delimeter...
 
@@ -187,13 +187,15 @@ def infixToPostfix(infixexpr):
             while (not opStack.isEmpty()) and \
                     (prec[opStack.peek()] >= prec[token]):
                 postfixList.append(opStack.pop())
-                opStack.push(token)
+            opStack.push(token)
     #We then check the opstack and add any remaining operators in the stack to the output list
     while not opStack.isEmpty():
         postfixList.append(opStack.pop())
 
     return " ".join(postfixList) #Joins elements of string with a space between them (member of "string" class)
 
+#Note: having or not having spaces in the input to the infixToPostfix function can causes problems and should be
+#      modified. The function should take a general format, no matter how many white spaces
 
 if __name__ == "__main__":
 
@@ -223,6 +225,30 @@ if __name__ == "__main__":
     number2 = baseConverter(1023, 16)
     print(number2)
 
-    list1 = infixToPostfix("(A + B) * (C + D)")
-    list2 = infixToPostfix("(A + B) * C")
+    list1 = infixToPostfix("( A + B ) * ( C + D )")
+    #For list1:
+    #   Add left parenthesis to opStack
+    #   Add "A" to output
+    #   Add "+" to opStack
+    #   Add "B" to output
+    #   Since we've reached the right parenthesis, pop the opStack until the left parenthesis is removed and add each
+    #   operator to the end of the list. "+" would go to the output (so far, A, B and + are in the output
+    #   Add "*" to the opStack
+    #   Add "(" to the opStack
+    #   Add "C" to the output
+    #   Add "+" to the opStack
+    #   Add "D" to the output
+    #   Since we've reached another right parenthesis, pop the opStack until the left parenthesis is removed. We have a
+    #   "+" in the opStack so we add that to the output and we should reach a left parenthesis. So the output should
+    #   have A, B, +, C, D, +
+    #   Since "*" is left in opStack, append that to the end of the output
+
+    list2 = infixToPostfix("( A + B ) * C")
     list3 = infixToPostfix("A + B + C")
+
+    print(list1)
+    print(list2)
+    print(list3)
+
+    #Note: Python raises a KeyError whenever a dict() object is requested (using the format a = adict[key])
+    #      and the key is not in the dictionary
