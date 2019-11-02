@@ -435,7 +435,7 @@ class Node:
 #Initially when we construct our list there are no items
 class UnorderedList:
     def __init__(self):
-        self.head = none
+        self.head = None
 
 #Checks to see if the head of the list is a reference to None (only true if there are no nodes in the linked list)
 #In Python None can be compared to any reference (two references are equal if they refer to the same object)
@@ -449,6 +449,41 @@ def add(self,item):
     temp = Node(item) #Creates a new node and places the item as its data
     temp.setNext(self.head) #Changes next reference of the new node to refer to the old first node of the list
     self.head = temp #Shifts head of the list (want rest of list to be attached to new first node)
+
+#This method is utilized to add values to the linked list
+def add(self, item):
+    temp = Node(item)
+    temp.setNext(self.head)
+    self.head = temp
+
+#This method is one way of traversing a linked list by returning the length of the linked list --> implemented by
+#moving through each node and keeping a running tally of how many nodes were encountered
+def length(self):
+    current = self.head
+    count = 0
+    while current != None:
+        count = count + 1
+        current = current.getNext()
+
+    return count
+#External reference is set as current and initialized to the head of the list in line 456. The while loop implements
+#the traversal --> as long as the current reference has not seen the end of the list (None), we move current along to
+#the next node through the assignment in the while loop
+
+#This method is a way to search the linked list and is similar to the length in that we traverse the linked list until
+#either we find the value we're looking for or get to the end of the linked list
+def search(self, item):
+    current = self.head
+    found = False
+    while current != None and not found: #As long as there are nodes to check and the value is not found we continue
+        if current.getData() == item:
+            found = True
+        else:
+            current = current.getNext()
+
+    return found
+#As in the length method, traversal is initialized to start at the head of the list --> we use a boolean to indicate
+#whether we found what we're looking for or not
 
 ########################################################################################################################
 if __name__ == "__main__":
@@ -553,3 +588,12 @@ if __name__ == "__main__":
 
     #Create a linked list
     mylist = UnorderedList()
+
+    mylist.add(31)
+    mylist.add(77)
+    mylist.add(17)
+    mylist.add(93)
+    mylist.add(26)
+    mylist.add(54)
+
+    print(mylist.search(17))
